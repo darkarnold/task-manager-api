@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+const { register, login } = require("./src/controllers/authController");
+
+app.use(express.json());
+
 const url = process.env.MONGODB_URI;
 
 mongoose
@@ -19,6 +23,9 @@ mongoose
 app.get("/", (req, res) => {
   res.send("We are live");
 });
+
+app.post("/register", register);
+app.post("/login", login);
 
 app.listen(process.env.PORT, () => {
   console.log(
