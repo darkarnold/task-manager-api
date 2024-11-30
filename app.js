@@ -1,8 +1,20 @@
 require("dotenv").config();
 
 const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
+
+const url = process.env.MONGODB_URI;
+
+mongoose
+  .connect(url)
+  .then(() => {
+    console.log("Connected to MongoDB database");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 app.get("/", (req, res) => {
   res.send("We are live");
