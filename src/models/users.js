@@ -41,12 +41,14 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// hash and encrpypt password
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
+// compare entered password with hashed password
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };

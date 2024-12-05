@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const { register, login } = require("./src/controllers/authController");
+const router = require("./src/routes/userRoutes");
 
 app.use(express.json());
 
@@ -20,12 +20,11 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
+app.use("/api", router);
+
 app.get("/", (req, res) => {
   res.send("We are live");
 });
-
-app.post("/register", register);
-app.post("/login", login);
 
 app.listen(process.env.PORT, () => {
   console.log(
