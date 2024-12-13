@@ -53,6 +53,36 @@ TaskSchema.pre("save", function (next) {
   next();
 });
 
+TaskSchema.statics.getFilteredTasks = async function (
+  query,
+  page = 1,
+  limit = 10,
+  sortBy = "createdAt",
+  sortOrder = "desc"
+) {
+  const skip = (page - 1) * limit;
+
+  const tasks = await this.find(query)
+    .sort({
+      [sortBy]: sortOrder === "desc" ? -1 : 1,
+    })
+    .skip(skip)
+    .limit(limit)
+    .populate("assignedBy", "name email")
+    .populate("assignedTo", "name email");
+
+  const total = await this.countDocuments(query);
+
+  return {
+    tasks,
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalTasks: total,
+    },
+  };
+};
+
 const Task = mongoose.model("Task", TaskSchema);
 
 module.exports = Task;
