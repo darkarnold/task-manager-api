@@ -20,6 +20,14 @@ exports.createTask = async (req, res) => {
 
 exports.getTasks = async (req, res) => {
   try {
+    console.log("Full Request Details:", {
+      user: {
+        _id: req.user._id,
+        role: req.user.role,
+      },
+      query: req.query,
+    });
+
     const { page, limit, sortBy, sortOrder, ...filters } = req.query;
 
     const result = await TaskService.getTasks(req.user, {

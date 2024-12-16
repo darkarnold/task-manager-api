@@ -5,7 +5,10 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const router = require("./src/routes/userRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const taskRoutes = require("./src/routes/taskRoutes");
+
+const authMiddleware = require("./src/middleware/authMiddleware");
 
 app.use(express.json());
 
@@ -20,11 +23,8 @@ mongoose
     console.error("Error connecting to MongoDB:", error);
   });
 
-app.use("/api", router);
-
-app.get("/", (req, res) => {
-  res.send("We are live");
-});
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/tasks", authMiddleware.protect, taskRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(

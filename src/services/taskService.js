@@ -4,21 +4,20 @@ const User = require("../models/users");
 class TaskService {
   // get tasks with advanced filtering and pagination
   async getTasks(user, filters = {}) {
+    console.log("Received Filters:", filters);
+
+    const { page, limit, sortBy, sortOrder, ...queryFilters } = filters;
     const query =
       user.role === "admin"
-        ? filters
+        ? queryFilters
         : {
-            ...filters,
+            ...queryFilters,
             $or: [{ assignedBy: user._id }, { assignedTo: user._id }],
           };
 
-    return await Task.getFilteredTasks(
-      query,
-      filters.page,
-      filters.limit,
-      filters.sortBy,
-      filters.sortOrder
-    );
+    console.log("Constructed Query:", query);
+
+    return await Task.getFilteredTasks(query, page, limit, sortBy, sortOrder);
   }
 
   // update a task

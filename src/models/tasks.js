@@ -60,6 +60,17 @@ TaskSchema.statics.getFilteredTasks = async function (
   sortBy = "createdAt",
   sortOrder = "desc"
 ) {
+  console.log("Query:", query);
+  console.log(
+    "Page:",
+    page,
+    "Limit:",
+    limit,
+    "SortBy:",
+    sortBy,
+    "SortOrder:",
+    sortOrder
+  );
   const skip = (page - 1) * limit;
 
   const tasks = await this.find(query)
