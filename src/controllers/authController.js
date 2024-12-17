@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
+const PasswordResetService = require("../services/passwordResetService");
 
 // register a new user
 exports.register = async (req, res) => {
@@ -69,6 +70,68 @@ exports.login = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error logging in user",
+      error: error.message,
+    });
+  }
+};
+
+// initiate password reset
+exports.initiatePasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        status: "error",
+        message: "Please provide an email address",
+      });
+    }
+
+    const result = await PasswordResetService.initiatePasswordReset(email);
+
+    return res.status(200).json({
+      status: "success",
+      message: result.message,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      status: "error",
+      error: error.message,
+    });
+  }
+};
+
+// rest password
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword, confirmPassword } = req.body;
+
+    // validate password
+    if (!newPassword || !confirmPassword) {
+      return res.status(400).json({
+        status: "error",
+        message: "Please provide new password and confirm password",
+      });
+    }
+
+    // check if passwords match
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({
+        status: "error",
+        message: "Passwords do not match",
+      });
+    }
+    const result = await PasswordResetService.resetPassword(token, newPassword);
+    return res.status(200).json({
+      status: "success",
+      message: result.message,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      status: "error",
       error: error.message,
     });
   }

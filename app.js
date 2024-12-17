@@ -7,6 +7,7 @@ const app = express();
 
 const userRoutes = require("./src/routes/userRoutes");
 const taskRoutes = require("./src/routes/taskRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 
 const authMiddleware = require("./src/middleware/authMiddleware");
 
@@ -24,6 +25,7 @@ mongoose
   });
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/tasks", authMiddleware.protect, taskRoutes);
 
 app.listen(process.env.PORT, () => {
