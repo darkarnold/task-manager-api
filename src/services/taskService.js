@@ -68,7 +68,7 @@ class TaskService {
       throw new Error("Not authorized to delete this task");
     }
 
-    await task.remove();
+    await task.deleteOne();
     return { message: "Task deleted successfully" };
   }
 
