@@ -5,6 +5,8 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const mongoose = require("mongoose");
 
+const productionURL = process.env.API_URL;
+
 // swagger documentation
 const swaggerOptions = {
   swaggerDefinition: {
@@ -12,11 +14,16 @@ const swaggerOptions = {
     info: {
       title: "Task management API",
       version: "1.0.0",
-      description: "API definition using swagger",
+      description: "Task management API definition using swagger",
     },
     servers: [
       {
+        url: productionURL,
+        description: "Production server",
+      },
+      {
         url: `http://localhost:${process.env.PORT}`,
+        description: "Local development server",
       },
     ],
     components: {
