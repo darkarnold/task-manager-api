@@ -8,7 +8,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/v1/users/forgot-password:
+ * /api/v1/auth/forgot-password:
  *   post:
  *     summary: Request Password Reset
  *     tags: [auth]
@@ -74,7 +74,7 @@ router.post("/forgot-password", initiatePasswordReset);
 
 /**
  * @swagger
- * /api/v1/users/reset-password/{token}:
+ * /api/v1/auth/reset-password/{token}:
  *   post:
  *     summary: Reset Password
  *     description: Reset a user's password using the reset token sent to their email.
