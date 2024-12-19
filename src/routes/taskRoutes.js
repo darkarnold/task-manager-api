@@ -151,7 +151,7 @@ router
  *         description: The unique ID of the task to be updated.
  *         schema:
  *           type: string
- *           format: uuid
+ *           description: The unique identifier of the task.
  *     requestBody:
  *       required: true
  *       content:
@@ -189,7 +189,7 @@ router
  *         description: The unique ID of the task to delete.
  *         schema:
  *           type: string
- *           format: uuid
+ *           description: The unique identifier of the task
  *     responses:
  *       204:
  *         description: Task successfully deleted.
